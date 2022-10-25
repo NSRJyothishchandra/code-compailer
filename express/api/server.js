@@ -1,15 +1,19 @@
-import cors from "cors";
-import express, { json } from "express";
-import fetch from "node-fetch";
-import dotenv from "dotenv";
+const cors  = require("cors");
+const express = require('express')
+// import fetch from "node-fetch";
+// import dotenv from "dotenv";
+const fetch  = require("node-fetch");
+const dotenv = require('dotenv')
+const bodyParser = require('body-parser')
 dotenv.config();
 
 // Create express app
-const app = express();
+const api = express.Router();
 
 // Middlewares
-app.use(cors());
-app.use(json());
+api.use(cors());
+
+api.use(bodyParser.json());
 
 // Get language code and version according to JDoodle API
 const languagesMap = {
@@ -20,7 +24,7 @@ const languagesMap = {
 };
 
 // Post request to create submission
-app.post("/api/submission", async (req, res) => {
+api.post("/api/submission", async (req, res) => {
   try {
     const [language, versionIndex] = languagesMap[req.body.language];
 
@@ -47,8 +51,7 @@ app.post("/api/submission", async (req, res) => {
   }
 });
 
-// Start server
-export default app
+module.exports = api
 
 
 // df028803f0141f1e74b87a3c2ca7210a
